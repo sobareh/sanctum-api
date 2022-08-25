@@ -23,3 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [LoginController::class, 'index']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/notes', [NotesController::class, 'index'])->middleware('auth:sanctum');
+
+Route::fallback(function (){
+    return response()->json([
+        "meta" => [
+            "message" => "API resource not found.",
+            "status" => "access denied | Forbidden.",
+            "code" => 403
+        ],
+        "data" => []
+    ],403);
+});

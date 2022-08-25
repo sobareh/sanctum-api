@@ -3,46 +3,52 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Traits\ResponseAPI;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller {
-    
+
+    use ResponseAPI;
+
     public function index(Request $request) {
         $request->validate([
-            'username' => 'required',
-            'password' => 'required'
+            'username' => 'required|string',
+            'password' => 'required|string'
         ]);
 
         $user = User::where('username', $request->username)->first();
 
-        if (!$user || Hash::check($request->password, $user->password)) {
-            return response([
-                'success' => false,
-                'message' => ['These credentials do not match our records.']
-            ], 404);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return $this->error(
+                'These credentials do not match our records.',
+                500
+            );
         }
 
-        $token = $user->createToken('ApiToken')->plainTextToken;
+        $accessToken = "AccessToken: " . $user->username;
 
-        return response([
-            'success' => true,
+        $token = $user->createToken($accessToken)->plainTextToken;
+
+        $data = [
             'user' => $user,
             'token' => $token
-        ],201);
+        ];
+
+        return $this->success(
+            'Login success.',
+             $data,
+        );
     }
 
-    public function logout(Request $request) {
-        // $user = User::find(1);
-
-        // $user->tokens()->where('tokenable_id', $user->id)->delete();
+    public function logout() {
 
         auth()->user()->tokens()->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Logout berhasil'
-        ], 200);
+        return $this->success(
+            'Logout berhasil.',
+            null
+        );
     }
 }

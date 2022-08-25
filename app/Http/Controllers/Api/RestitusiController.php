@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Notes;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NotesController extends Controller
+class RestitusiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,21 +13,6 @@ class NotesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $notes = Notes::all();
-
-        return response()->json([
-            'success' => true,
-            'data' => $notes
-        ],200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -46,21 +31,10 @@ class NotesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Notes  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Notes $notes)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Notes  $notes
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Notes $notes)
+    public function show($id)
     {
         //
     }
@@ -69,10 +43,10 @@ class NotesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Notes  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Notes $notes)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -80,10 +54,10 @@ class NotesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Notes  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Notes $notes)
+    public function destroy($id)
     {
         //
     }
