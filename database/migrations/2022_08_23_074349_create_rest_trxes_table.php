@@ -19,8 +19,8 @@ class CreateRestTrxesTable extends Migration
             $table->string('nama_wp');
             $table->string('no_spt_lb')->nullable();
             $table->date('tgl_spt_lb')->nullable();
-            $table->string('no_tindaklanjut_awal');
-            $table->date('tgl_tindaklanjut_awal');
+            $table->string('no_tindaklanjut_awal')->nullable();
+            $table->date('tgl_tindaklanjut_awal')->nullable();
             $table->boolean('is_completed')->default(false);
             $table->foreignId('user_id')
                 ->nullable()

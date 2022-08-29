@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RestDetail extends Model
 {
     use HasFactory;
+
+    public function flagProcess() {
+        return $this->hasMany(RestStages::class);
+    }
 }

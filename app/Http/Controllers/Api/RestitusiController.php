@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\RestTrx;
+use App\Traits\ResponseAPI;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RestitusiController extends Controller
 {
+    use ResponseAPI;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,12 @@ class RestitusiController extends Controller
      */
     public function index()
     {
-        //
+        $data = RestTrx::all();
+
+        return $this->success(
+            'Data Retrieved Successfully.',
+            $data
+        );
     }
 
     /**
@@ -25,7 +34,19 @@ class RestitusiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'npwp'=> 'required|string|max:20',
+            'nama_wp'=> 'required|string',
+            'no_spt_lb' => 'string|max:100|nullable',
+            'tgl_spt_lb' => 'string|nullable',
+            'no_tindaklanjut_awal' => 'string|max:100|nullable',
+            'tgl_tindaklanjut_awal' => 'string|nullable',
+            'user_id' => 'required|numeric',
+        ]);
+
+        $newRecord = RestTrx::create($data);
+
+        return $this->success('data successfully added', $newRecord);
     }
 
     /**
@@ -36,7 +57,12 @@ class RestitusiController extends Controller
      */
     public function show($id)
     {
-        //
+        $restitusiData = RestTrx::with('archives')->find($id);
+
+        return $this->success(
+            'Detail data retrieved',
+            $restitusiData,
+        );
     }
 
     /**
@@ -48,7 +74,24 @@ class RestitusiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inboundRequest = $request->validate([
+            'npwp'=> 'string|max:20|nullable',
+            'nama_wp'=> 'string|nullable',
+            'no_spt_lb' => 'string|max:100|nullable',
+            'tgl_spt_lb' => 'string|nullable',
+            'no_tindaklanjut_awal' => 'string|max:100|nullable',
+            'tgl_tindaklanjut_awal' => 'string|nullable',
+            'user_id' => 'nullable',
+        ]);
+
+        $reqData = RestTrx::where('id', $id)
+                    ->firstOrFail()
+                    ->update($inboundRequest);
+
+        return $this->success(
+            'data successfully updated.',
+            $reqData
+        );
     }
 
     /**
@@ -59,6 +102,12 @@ class RestitusiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = RestTrx::find($id);
+
+        if ($data->delete()) {
+            return $this->success("data successfully deleted.");
+        }
+
+        return $this->error("error while deleting the records.");
     }
 }

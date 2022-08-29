@@ -32,7 +32,7 @@
             }
         }
 
-        public function success($message, $data, $statusCode = 200) {
+        public function success($message, $data = null, $statusCode = 200) {
             return $this->coreResponse($message,$data,$statusCode);
         }
 

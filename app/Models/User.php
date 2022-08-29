@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\RestTrx;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,6 +22,10 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
+        'nip',
+        'jabatan',
+        'role',
+        'remember_token'
     ];
 
     /**
@@ -33,11 +38,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The restTransactions that belong to the User
      *
-     * @var array<string, string>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected $casts = [
-        'username_verified_at' => 'datetime',
-    ];
+    public function restTrxs() {
+        return $this->hasMany(RestTrx::class);
+    }
+
+
 }
