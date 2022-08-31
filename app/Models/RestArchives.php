@@ -9,6 +9,15 @@ class RestArchives extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "no_dokumen",
+        "tgl_dokumen",
+        "url_path",
+        "document_name",
+        "nominal",
+        "description",
+    ];
+
     public function transactions() 
     {
         return $this->belongsToMany(RestTrx::class, 'rest_details', 'rest_archives_id', 'rest_trx_id')

@@ -41,7 +41,7 @@ class RestitusiController extends Controller
             'tgl_spt_lb' => 'string|nullable',
             'no_tindaklanjut_awal' => 'string|max:100|nullable',
             'tgl_tindaklanjut_awal' => 'string|nullable',
-            'user_id' => 'required|numeric',
+            'user_id' => 'required|string',
         ]);
 
         $newRecord = RestTrx::create($data);
@@ -81,7 +81,7 @@ class RestitusiController extends Controller
             'tgl_spt_lb' => 'string|nullable',
             'no_tindaklanjut_awal' => 'string|max:100|nullable',
             'tgl_tindaklanjut_awal' => 'string|nullable',
-            'user_id' => 'nullable',
+            'user_id' => 'string|nullable',
         ]);
 
         $reqData = RestTrx::where('id', $id)
