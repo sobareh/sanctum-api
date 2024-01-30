@@ -18,15 +18,17 @@
                 return response()->json([
                     'meta' => [
                         'message' => $message,
-                        'error' => false,
+                        'success' => true,
                         'status_code' => $statusCode,
                     ],
                     'data' => $data
                 ], $statusCode);
-            } else {
+            } 
+            
+            if(!$isSuccess){
                 return response()->json([
                     'message' => $message,
-                    'error' => true,
+                    'success' => false,
                     'status_code' => $statusCode
                 ], $statusCode);
             }
@@ -37,6 +39,6 @@
         }
 
         public function error($message, $statuscode = 500) {
-            return $this->coreResponse($message,null, $statuscode, false);
+            return $this->coreResponse($message, null,$statuscode, false);
         }
     }

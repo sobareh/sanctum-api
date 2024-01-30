@@ -6,6 +6,9 @@ use App\Models\RestTrx;
 use App\Traits\ResponseAPI;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailResource;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\RestitusiResource;
 
 class RestitusiController extends Controller
 {
@@ -18,11 +21,12 @@ class RestitusiController extends Controller
      */
     public function index()
     {
-        $data = RestTrx::all();
+        $data = RestTrx::orderBy('created_at', 'desc')->get();
+        $restitusi = RestitusiResource::collection($data);
 
         return $this->success(
             'Data Retrieved Successfully.',
-            $data
+            $restitusi
         );
     }
 
@@ -58,10 +62,11 @@ class RestitusiController extends Controller
     public function show($id)
     {
         $restitusiData = RestTrx::with('archives')->find($id);
+        $data = new DetailResource($restitusiData);
 
         return $this->success(
             'Detail data retrieved',
-            $restitusiData,
+            $data,
         );
     }
 

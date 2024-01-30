@@ -45,21 +45,21 @@ class ArchiveController extends Controller
 
         $itemData = Arr::except($data, ['rest_trx_id', 'rest_stages_id']);
         
-        $filePath = RestStages::getPathId($rest_trx_id, $rest_stages_id);
-        [$folderName, $fileName] = $filePath;
+        if ($request->hasFile('dokumen')) {
+            $filePath = RestStages::getPathId($rest_trx_id, $rest_stages_id);
+            [$folderName, $fileName] = $filePath;
+
+            $file = $request->file('dokumen');
+            $file->storeAs($folderName, $fileName, 'pristine');
+        }
 
         $itemData["url_path"] = $folderName;
         $itemData["document_name"] = $fileName;
         $recordItem = RestArchives::create($itemData);
 
         $recordPivot = $recordItem->transactions()->attach(
-            $rest_trx_id, 
-            ["rest_stages_id" => $rest_stages_id]
+            $rest_trx_id,  
         );
-
-        $file = $request->file('dokumen');
-        var_dump($file);
-        $file->storeAs($folderName, $fileName, 'public');
 
        return response()->json([
            $recordItem,

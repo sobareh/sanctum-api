@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\{LoginController, ArchiveController, RestitusiController};
+use App\Http\Controllers\Api\{LoginController, ArchiveController, RestitusiController, DashboardController};
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [LoginController::class, 'index']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
     
     Route::get('/restitusi', [RestitusiController::class, 'index']);
     Route::post('/restitusi', [RestitusiController::class, 'store']);
@@ -37,11 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::fallback(function (){
     return response()->json([
-        "meta" => [
-            "message" => "API resource not found.",
-            "status" => "access denied | Forbidden.",
-            "code" => 403
-        ],
-        "data" => []
+        "message" => "API resource not found.",
+        "status" => "access denied | Forbidden.",
+        "code" => 403
     ],403);
 });

@@ -35,6 +35,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'pristine' => [
+            'driver' => 'local',
+            'root' => base_path('pristine'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

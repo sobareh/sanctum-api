@@ -27,13 +27,16 @@ class LoginController extends Controller {
             );
         }
 
+        $user->tokens()->delete();
+
         $accessToken = "AccessToken: " . $user->username;
 
         $token = $user->createToken($accessToken)->plainTextToken;
 
         $data = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'expired_at' => now()->addHour(12)
         ];
 
         return $this->success(
@@ -42,13 +45,16 @@ class LoginController extends Controller {
         );
     }
 
-    public function logout() {
+    public function logout(Request $request) {
 
-        auth()->user()->tokens()->delete();
+        $logout = auth()->user()->currentAccessToken()->delete();
 
-        return $this->success(
-            'Logout berhasil.',
-            null
-        );
+        if ($logout) {
+            return $this->success(
+                'Logout berhasil.',
+            );
+        }
+
+        return $this->error('logout gagal');
     }
 }

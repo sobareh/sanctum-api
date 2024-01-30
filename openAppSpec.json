@@ -1,16 +1,30 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "$Title$",
-    "description": "$Title$",
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "$https$"
-    }
-  ],
-  "paths": {
-    $END$
-  }
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Title",
+        "description": "Title",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://sanctum-api.test/api"
+        }
+    ],
+    "paths": {
+        "/restitusi" : {
+            "get": {
+                "tags": ["Restitusi"],
+                "requestBody": {
+                    "description": "aaa",
+                    "content": {
+                        "application/json" : {
+
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+
 }
