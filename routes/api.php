@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\{LoginController, ArchiveController, RestitusiController, DashboardController};
+use App\Http\Controllers\DokumenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     
     Route::get('/restitusi', [RestitusiController::class, 'index']);
-    Route::post('/restitusi', [RestitusiController::class, 'store']);
+    Route::post('/restitusi', [DokumenController::class, 'store']);
     Route::get('/restitusi/{id}', [RestitusiController::class, 'show']);
     Route::delete('/restitusi/{id}', [RestitusiController::class, 'destroy']);
     Route::patch('/restitusi/{id}', [RestitusiController::class, 'update']);
