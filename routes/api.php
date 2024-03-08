@@ -27,14 +27,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
     
-    Route::get('/restitusi', [RestitusiController::class, 'index']);
-    Route::post('/restitusi', [DokumenController::class, 'store']);
-    Route::get('/restitusi/{id}', [RestitusiController::class, 'show']);
-    Route::delete('/restitusi/{id}', [RestitusiController::class, 'destroy']);
-    Route::patch('/restitusi/{id}', [RestitusiController::class, 'update']);
-
-    Route::post('/restitusi/{id}/archive', [ArchiveController::class, 'store']);
-    Route::delete('/archive/{id}', [ArchiveController::class, 'destroy']);
+    Route::get('/dokumen', [DokumenController::class, 'index']);
+    Route::post('/dokumen', [DokumenController::class, 'store']);
+    Route::get('/dokumen/{id}', [DokumenController::class, 'show']);
+    Route::delete('/dokumen/{id}', [DokumenController::class, 'destroy']);
+    Route::patch('/dokumen/{id}', [DokumenController::class, 'update']);
 });
 
 

@@ -44,15 +44,15 @@ class DokumenController extends Controller
             'loc_id' => 'required|string',
             'nip_rekam' => 'required|string',
             'tanggal_rekam' => 'required',
-            // 'doc_file' => 'required|mimes:pdf',
         ]);
 
         if ($request->hasFile('dokumen')) {            
             $file = $request->file('dokumen');
-            $file->storeAs('dokumen','pristine');
+            $fileName = 'TIKPDSP-2024-' . $data['nama'] . '.pdf';
+            $file->storeAs('dokumen', $fileName);
         }
 
-        $data["doc_file"] = '111';
+        $data["doc_file"] = $fileName;
 
         $newRecord = Dokumen::create($data);
 
@@ -65,14 +65,13 @@ class DokumenController extends Controller
      * @param  \App\Models\Dokumen  $dokumen
      * @return \Illuminate\Http\Response
      */
-    public function show(Dokumen $dokumen)
+    public function show($id)
     {
-        $dokumenData = RestTrx::with('archives')->find($dokumen);
-        $data = new DetailResource($dokumenData);
+        $dokumenData = Dokumen::find($id);
 
         return $this->success(
             'Detail data retrieved',
-            $data,
+            $dokumenData,
         );
     }
 
@@ -86,16 +85,18 @@ class DokumenController extends Controller
     public function update(Request $request, Dokumen $dokumen)
     {
         $inboundRequest = $request->validate([
-            'npwp'=> 'string|max:20|nullable',
-            'nama_wp'=> 'string|nullable',
-            'no_spt_lb' => 'string|max:100|nullable',
-            'tgl_spt_lb' => 'string|nullable',
-            'no_tindaklanjut_awal' => 'string|max:100|nullable',
-            'tgl_tindaklanjut_awal' => 'string|nullable',
-            'user_id' => 'string|nullable',
+            'doc_type'=> 'required|string',
+            'doc_no'=> 'required|string',
+            'nama' => 'required|string',
+            'keterangan' => 'string|nullable',
+            'page_count' => 'nullable',
+            'box_id' => 'required|string',
+            'loc_id' => 'required|string',
+            'nip_rekam' => 'required|string',
+            'tanggal_rekam' => 'required',
         ]);
 
-        $reqData = RestTrx::where('id', $id)
+        $reqData = Dokumen::where('id', $id)
                     ->firstOrFail()
                     ->update($inboundRequest);
 
@@ -111,8 +112,14 @@ class DokumenController extends Controller
      * @param  \App\Models\Dokumen  $dokumen
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dokumen $dokumen)
+    public function destroy($id)
     {
-        //
+        $data = Dokumen::find($id);
+
+        if ($data->delete()) {
+            return $this->success("data successfully deleted.");
+        }
+
+        return $this->error("error while deleting the records.");
     }
 }
